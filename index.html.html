@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fundación Ayuda Mutua - Sistema de Gestión</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: white;
+            min-height: 100vh;
+            box-shadow: 0 0 30px rgba(0,0,0,0.1);
+        }
+
+        /* Header */
+        .header {
+            background: linear-gradient(90deg, #2c3e50 0%, #34495e 100%);
+            color: white;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: #3498db;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: #3498db;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+
+        /* Sidebar */
+        .main-content {
+            display: flex;
+            min-height: calc(100vh - 80px);
+        }
+
+        .sidebar {
+            width: 260px;
+            background: #f8f9fa;
+            border-right: 1px solid #e9ecef;
+            padding: 2rem 0;
+        }
+
+        .nav-item {
+            display: block;
+            padding: 1rem 2rem;
+            color: #495057;
+            text-decoration: none;
+            border-left: 4px solid transparent;
+            transition: all 0.3s ease;
+            font-size: 1rem;
+            font-weight: 500;
+        }
+
+        .nav-item:hover, .nav-item.active {
+            background: #e3f2fd;
+            border-left-color: #2196f3;
+            color: #1976d2;
+        }
+
+        .nav-item i {
+            margin-right: 1rem;
+            width: 20px;
+        }
+
+        /* Dashboard Content */
+        .content {
+            flex: 1;
+            padding: 2rem;
+            background: #f8f9fa;
+        }
+
+        .page-title {
+            font-size: 2.2rem;
+            color: #2c3e50;
+            margin-bottom: 2rem;
+            font-weight: 300;
+        }
+
+        /* Statistics Cards */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 3rem;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 2rem;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.07);
+            border-left: 5px solid #3498db;
+            transition: transform 0.3s ease;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .stat-card.events {
+            border-left-color: #e74c3c;
+        }
+
+        .stat-card.donors {
+            border-left-color: #2ecc71;
+        }
+
+        .stat-card.donations {
+            border-left-color: #f39c12;
+        }
+
+        .stat-card.attendance {
+            border-left-color: #9b59b6;
+        }
+
+        .stat-number {
+            font-size: 3rem;
+            font-weight: bold;
+            color: #2c3e50;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-label {
+            font-size: 1.1rem;
+            color: #7f8c8d;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .stat-change {
+            font-size: 0.9rem;
+            margin-top: 0.5rem;
+        }
+
+        .positive { color: #27ae60; }
+        .negative { color: #e74c3c; }
+
+        /* Quick Actions */
+        .quick-actions {
+            background: white;
+            padding: 2rem;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.07);
+            margin-bottom: 2rem;
+        }
+
+        .section-title {
+            font-size: 1.4rem;
+            color: #2c3e50;
+            margin-bottom: 1.5rem;
+            font-weight: 600;
+        }
+
+        .action-buttons {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+        }
+
+        .btn {
+            padding: 1rem 1.5rem;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        .btn-primary {
+            background: linear-gradient(45deg, #3498db, #2980b9);
+            color: white;
+        }
+
+        .btn-success {
+            background: linear-gradient(45deg, #2ecc71, #27ae60);
+            color: white;
+        }
+
+        .btn-warning {
+            background: linear-gradient(45deg, #f39c12, #e67e22);
+            color: white;
+        }
+
+        .btn-info {
+            background: linear-gradient(45deg, #9b59b6, #8e44ad);
+            color: white;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+        }
+
+        /* Recent Events Table */
+        .recent-events {
+            background: white;
+            padding: 2rem;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.07);
+        }
+
+        .table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1rem;
+        }
+
+        .table th,
+        .table td {
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 1px solid #e9ecef;
+        }
+
+        .table th {
+            background: #f8f9fa;
+            font-weight: 600;
+            color: #495057;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            font-size: 0.9rem;
+        }
+
+        .status-badge {
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .status-active {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .status-pending {
+            background: #fff3cd;
+            color: #856404;
+        }
+
+        .status-completed {
+            background: #d1ecf1;
+            color: #0c5460;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .main-content {
+                flex-direction: column;
+            }
+
+            .sidebar {
+                width: 100%;
+                order: 2;
+            }
+
+            .content {
+                order: 1;
+                padding: 1rem;
+            }
+
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .action-buttons {
+                grid-template-columns: 1fr;
+            }
+
+            .page-title {
+                font-size: 1.8rem;
+            }
+        }
+
+        /* Notification Bell */
+        .notification-bell {
+            position: relative;
+            cursor: pointer;
+        }
+
+        .notification-count {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            background: #e74c3c;
+            color: white;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            font-size: 0.8rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <div class="logo">
+                <i>🤝</i> Fundación Ayuda Mutua
+            </div>
+            <div class="user-info">
+                <div class="notification-bell">
+                    <i>🔔</i>
+                    <span class="notification-count">3</span>
+                </div>
+                <div class="user-avatar">AM</div>
+                <span>Administrador</span>
+            </div>
+        </header>
+
+        <div class="main-content">
+            <!-- Sidebar -->
+            <nav class="sidebar">
+                <a href="#" class="nav-item active">
+                    <i>📊</i> Dashboard
+                </a>
+                <a href="#" class="nav-item">
+                    <i>📅</i> Gestión de Eventos
+                </a>
+                <a href="#" class="nav-item">
+                    <i>👥</i> CRM Donantes
+                </a>
+                <a href="#" class="nav-item">
+                    <i>📧</i> Invitaciones
+                </a>
+                <a href="#" class="nav-item">
+                    <i>💰</i> Donaciones
+                </a>
+                <a href="#" class="nav-item">
+                    <i>👨‍👩‍👧‍👦</i> Beneficiarios
+                </a>
+                <a href="#" class="nav-item">
+                    <i>📈</i> Reportes
+                </a>
+                <a href="#" class="nav-item">
+                    <i>⚙️</i> Configuración
+                </a>
+            </nav>
+
+            <!-- Main Content -->
+            <main class="content">
+                <h1 class="page-title">Dashboard Principal</h1>
+
+                <!-- Statistics Cards -->
+                <div class="stats-grid">
+                    <div class="stat-card events">
+                        <div class="stat-number">12</div>
+                        <div class="stat-label">Eventos Próximos</div>
+                        <div class="stat-change positive">↗ +25% este mes</div>
+                    </div>
+                    <div class="stat-card donors">
+                        <div class="stat-number">248</div>
+                        <div class="stat-label">Donantes Activos</div>
+                        <div class="stat-change positive">↗ +15% este mes</div>
+                    </div>
+                    <div class="stat-card donations">
+                        <div class="stat-number">$45,230</div>
+                        <div class="stat-label">Donaciones del Mes</div>
+                        <div class="stat-change positive">↗ +40% vs mes anterior</div>
+                    </div>
+                    <div class="stat-card attendance">
+                        <div class="stat-number">85%</div>
+                        <div class="stat-label">Asistencia Promedio</div>
+                        <div class="stat-change positive">↗ +35% mejora</div>
+                    </div>
+                </div>
+
+                <!-- Quick Actions -->
+                <div class="quick-actions">
+                    <h2 class="section-title">Acciones Rápidas</h2>
+                    <div class="action-buttons">
+                        <button class="btn btn-primary">
+                            <i>➕</i> Crear Evento
+                        </button>
+                        <button class="btn btn-success">
+                            <i>👤</i> Agregar Donante
+                        </button>
+                        <button class="btn btn-warning">
+                            <i>📧</i> Enviar Invitaciones
+                        </button>
+                        <button class="btn btn-info">
+                            <i>📊</i> Generar Reporte
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Recent Events -->
+                <div class="recent-events">
+                    <h2 class="section-title">Eventos Recientes</h2>
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Evento</th>
+                                <th>Fecha</th>
+                                <th>Invitados</th>
+                                <th>Confirmados</th>
+                                <th>Estado</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Cena Benéfica Anual</td>
+                                <td>15 Sep 2025</td>
+                                <td>150</td>
+                                <td>128</td>
+                                <td><span class="status-badge status-active">Activo</span></td>
+                            </tr>
+                            <tr>
+                                <td>Taller de Capacitación</td>
+                                <td>22 Sep 2025</td>
+                                <td>80</td>
+                                <td>65</td>
+                                <td><span class="status-badge status-pending">Pendiente</span></td>
+                            </tr>
+                            <tr>
+                                <td>Recaudación Comunitaria</td>
+                                <td>10 Sep 2025</td>
+                                <td>200</td>
+                                <td>185</td>
+                                <td><span class="status-badge status-completed">Completado</span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <script>
+        // Simulación de interactividad
+        document.querySelectorAll('.nav-item').forEach(item => {
+            item.addEventListener('click', (e) => {
+                e.preventDefault();
+                document.querySelectorAll('.nav-item').forEach(nav => nav.classList.remove('active'));
+                item.classList.add('active');
+            });
+        });
+
+        document.querySelectorAll('.btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                btn.style.transform = 'scale(0.95)';
+                setTimeout(() => {
+                    btn.style.transform = '';
+                }, 150);
+            });
+        });
+
+        // Simulación de notificaciones
+        document.querySelector('.notification-bell').addEventListener('click', () => {
+            alert('Tienes 3 notificaciones nuevas:\n• Nuevo donante registrado\n• Confirmación de evento\n• Reporte mensual disponible');
+        });
+    </script>
+</body>
+</html>
